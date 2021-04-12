@@ -7,7 +7,6 @@ using Debug = System.Diagnostics.Debug;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
-
     public delegate void EscAction();
 
     public static event EscAction EscClicked;

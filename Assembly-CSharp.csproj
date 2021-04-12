@@ -71,6 +71,7 @@
      <Compile Include="Assets\_Scripts\Production\Building\Barracks\Barrack.cs" />
      <Compile Include="Assets\_Scripts\Production\Building\Builder.cs" />
      <Compile Include="Assets\_Scripts\Production\Building\Power Plant\PowerPlant.cs" />
+     <Compile Include="Assets\_Scripts\Production\Building\SpawnBuild.cs" />
      <Compile Include="Assets\_Scripts\Production\ObjectPooler.cs" />
      <Compile Include="Assets\_Scripts\Production\Production.cs" />
      <Compile Include="Assets\_Scripts\Production\Unit\AbstractUnit.cs" />

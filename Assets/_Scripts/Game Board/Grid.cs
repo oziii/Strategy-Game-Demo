@@ -81,11 +81,13 @@ public class Grid : MonoBehaviour
     public static Node NodeGet(Transform pos)
     {
         RaycastHit2D hit = Physics2D.Raycast(pos.position, Vector2.down, Mathf.Infinity, GameManager.Instance.layerMask);
-        if (hit.collider.TryGetComponent(out Node node))
-        {
-            return node;
-        }
-        return null;
+        return hit.collider.TryGetComponent(out Node node) ? node : null;
+    }
+    
+    public static Node NodeGet(Vector3 pos)
+    {
+        RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, Mathf.Infinity, GameManager.Instance.layerMask);
+        return hit.collider.TryGetComponent(out Node node) ? node : null;
     }
     
     #endregion

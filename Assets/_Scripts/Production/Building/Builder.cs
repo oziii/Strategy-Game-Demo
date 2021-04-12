@@ -134,7 +134,8 @@ public class Builder : MonoBehaviour
             ISpawn spawn = list.First().GetComponent<ISpawn>();
             if (spawn != null)
             {
-                StartCoroutine(list.First().GetComponent<ISpawn>().UnitSpawn(production, ClampHelper.MidPoint(list.First().position, list.Last().position)));
+                //StartCoroutine(list.First().GetComponent<ISpawn>().UnitSpawn(production, ClampHelper.MidPoint(list.First().position, list.Last().position)));
+                StartCoroutine(list.First().GetComponent<ISpawn>().UnitSpawn(production));
             }
 
         }

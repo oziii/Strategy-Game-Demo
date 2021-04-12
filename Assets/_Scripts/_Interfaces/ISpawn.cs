@@ -5,4 +5,7 @@ using UnityEngine;
 public interface ISpawn
 {
     IEnumerator UnitSpawn(Production production, Vector3 pos);
+    IEnumerator UnitSpawn(Production production);
+    
+    
 }
