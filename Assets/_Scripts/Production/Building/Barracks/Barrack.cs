@@ -18,13 +18,7 @@ public class Barrack : AbstractBuild, ISpawn, IClickable
     private Vector3 _midPoint;
     
     #region Unity_Methods
-
-    private void OnEnable()
-    {
-        var parent = transform.parent;
-        _midPoint = ClampHelper.MidPoint(parent.GetChild(0).position, parent.GetChild(parent.childCount).position);
-    }
-
+    
     /// <summary>
     /// It organizes the information menu where you touch the product.
     /// </summary>
@@ -68,6 +62,31 @@ public class Barrack : AbstractBuild, ISpawn, IClickable
         }
     }
     
+    public IEnumerator UnitSpawn(Production production)
+    {
+        List<Collider2D> nodes = new List<Collider2D>();
+        HashSet<Node> spawnNodeList = new HashSet<Node>();
+        
+        while (Physics2D.OverlapCircle(Vector2.one, range, layerMask, nodes) > 1)
+        {
+            foreach (var nodeVar in nodes)
+            {
+                if (nodeVar.TryGetComponent(out Node node))
+                {
+                    if (!node.isBlocked)
+                    {
+                        spawnNodeList.Add(node);
+                    }
+                }
+            }
+            yield return new WaitForSeconds(spawnTime);
+            
+            if (spawnNodeList.Count != 0) { Spawn(spawnNodeList, production.unitSprite.RandomItem()); }
+            
+            yield return null;
+        }
+    }
+    
     /// <summary>
     /// A unit was created on a random node from the list of empty nodes.
     /// </summary>
@@ -84,7 +103,12 @@ public class Barrack : AbstractBuild, ISpawn, IClickable
         soldier.name = unit.productionName + " " + pos.x + ","+pos.y;
         Grid.NodeBlocked(soldier.transform, true);
     }
-    
+
+
+    public void SS()
+    {
+        print("ss");
+    }
     #endregion
 
 
