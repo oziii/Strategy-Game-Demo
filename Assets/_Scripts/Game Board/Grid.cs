@@ -5,6 +5,9 @@ using UnityEngine;
 
 public class Grid : MonoBehaviour
 {
+    [Tooltip(" Search empty node layer")]
+    public static ContactFilter2D layerMask;
+    
     [SerializeField] private Node nodeObj;
     
     [SerializeField] private int width;
@@ -88,6 +91,29 @@ public class Grid : MonoBehaviour
     {
         RaycastHit2D hit = Physics2D.Raycast(pos, Vector2.down, Mathf.Infinity, GameManager.Instance.layerMask);
         return hit.collider.TryGetComponent(out Node node) ? node : null;
+    }
+
+    public static Vector3 RangeRandomPoint(Vector3 pos)
+    {
+        List<Collider2D> nodes = new List<Collider2D>();
+        HashSet<Node> spawnNodeList = new HashSet<Node>();
+        
+        if (Physics2D.OverlapCircle(pos, 5, layerMask , nodes) > 1)
+        {
+            foreach (var nodeVar in nodes)
+            {
+                if (nodeVar.TryGetComponent(out Node node))
+                {
+                    if (!node.isBlocked)
+                    {
+                        spawnNodeList.Add(node);
+                    }
+                }
+            }
+            
+            if (spawnNodeList.Count != 0) {return spawnNodeList.RandomHashItem().position; }
+        }
+        return Vector3.one;
     }
     
     #endregion

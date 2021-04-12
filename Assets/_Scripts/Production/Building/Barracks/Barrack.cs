@@ -6,17 +6,8 @@ using UnityEngine;
 using Random = System.Random;
 
 
-public class Barrack :  SpawnBuild, IClickable
+public class Barrack : SpawnBuild, IClickable, ISpawnButton
 {
-    // [Tooltip(" Search empty node layer")]
-    // public ContactFilter2D layerMask;
-    //
-    // public float range;
-
-    public float spawnTime;
-
-    private Vector3 _midPoint;
-    
     #region Unity_Methods
     
     /// <summary>
@@ -27,92 +18,31 @@ public class Barrack :  SpawnBuild, IClickable
         selected = true;
         GameManager.Instance.startNode = null;
         GameManager.Instance.selectedUnit = null;
+        GameManager.Instance.selectedSpawnBuild = transform.parent.GetChild(0).gameObject;
         InformationMenu.Instance.InformationMenuSet(Resources.Load<Production>("Barrack"));
     }
+    
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(1) && GameManager.Instance.selectedSpawnBuild == gameObject)
+        {
+            var parent = transform.parent;
+            parent.GetChild(0).GetComponent<ISpawn>().Flag = FlagAdd(parent.GetChild(0).GetComponent<ISpawn>().Flag, GameObjectHelper.GetMouseWorldPosition());
+            selected = false;
+        }
+    }
+    
     
     #endregion
 
     #region Barrack_Methods
-    
-    // /// <summary>
-    // ///  Character spawn on empty nodes around the building.
-    // /// </summary>
-    // /// <param name="production"></param>
-    // /// <param name="pos"></param>
-    // /// <returns></returns>
-    // public IEnumerator UnitSpawn(Production production, Vector3 pos)
-    // {
-    //     List<Collider2D> nodes = new List<Collider2D>();
-    //     HashSet<Node> spawnNodeList = new HashSet<Node>();
-    //     
-    //     while (Physics2D.OverlapCircle(pos, range, layerMask, nodes) > 1)
-    //     {
-    //         foreach (var nodeVar in nodes)
-    //         {
-    //             if (nodeVar.TryGetComponent(out Node node))
-    //             {
-    //                 if (!node.isBlocked)
-    //                 {
-    //                     spawnNodeList.Add(node);
-    //                 }
-    //             }
-    //         }
-    //         yield return new WaitForSeconds(spawnTime);
-    //         
-    //         if (spawnNodeList.Count != 0) { Spawn(spawnNodeList, production.unitSprite.RandomItem()); }
-    //         
-    //         yield return null;
-    //     }
-    // }
-    //
-    // public IEnumerator UnitSpawn(Production production)
-    // {
-    //     List<Collider2D> nodes = new List<Collider2D>();
-    //     HashSet<Node> spawnNodeList = new HashSet<Node>();
-    //     
-    //     while (Physics2D.OverlapCircle(flagPos, range, layerMask, nodes) > 1)
-    //     {
-    //         foreach (var nodeVar in nodes)
-    //         {
-    //             if (nodeVar.TryGetComponent(out Node node))
-    //             {
-    //                 if (!node.isBlocked)
-    //                 {
-    //                     spawnNodeList.Add(node);
-    //                 }
-    //             }
-    //         }
-    //         yield return new WaitForSeconds(spawnTime);
-    //         
-    //         if (spawnNodeList.Count != 0) { Spawn(spawnNodeList, production.unitSprite.RandomItem()); }
-    //         
-    //         yield return null;
-    //     }
-    // }
-    //
-    // /// <summary>
-    // /// A unit was created on a random node from the list of empty nodes.
-    // /// </summary>
-    // /// <param name="list"></param>
-    // /// <param name="unit"></param>
-    // public void Spawn(HashSet<Node> list, Production unit)
-    // {
-    //     var pos = list.RandomRemoveHashItem().gameObject.transform.position;
-    //     //object pool
-    //     var soldier = ObjectPooler.SharedInstance.GetPooledObject(TAGS.Soldier);
-    //     soldier.SetActive(true);
-    //     pos.z = -1;
-    //     soldier.transform.position = pos;
-    //     soldier.name = unit.productionName + " " + pos.x + ","+pos.y;
-    //     Grid.NodeBlocked(soldier.transform, true);
-    // }
-    
-    
-    
-    public void SS(int ok)
+
+    public void Spawn()
     {
-        print(ok);
+        var production = Resources.Load<Production>("Barrack");
+        StartCoroutine( transform.parent.GetChild(0).GetComponent<ISpawn>().UnitSpawn(production, GetComponent<ISpawn>().Flag.transform.position));
     }
+
     #endregion
     
 }

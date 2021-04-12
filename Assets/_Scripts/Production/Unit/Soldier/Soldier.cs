@@ -22,6 +22,7 @@ public class Soldier : AbstractUnit, IClickable
             //Selected soldier       
             GameManager.Instance.startNode = Grid.NodeGet(transform);;
             GameManager.Instance.selectedUnit = this;
+            GameManager.Instance.selectedSpawnBuild = null;
         }
         
         //İnformation menu

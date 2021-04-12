@@ -8,9 +8,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public delegate void EscAction();
-
     public static event EscAction EscClicked;
-    
+
     public enum GameState { Play, Building, Menu}
 
     public GameState gameState;
@@ -22,8 +21,8 @@ public class GameManager : MonoBehaviour
     public Builder builder;
 
     public Grid grid;
-    
-    
+
+    public GameObject selectedSpawnBuild;
     
     [Tooltip("node with the selected unit")]
     public Node startNode;
@@ -85,6 +84,17 @@ public class GameManager : MonoBehaviour
         gameState = GameState.Building;
         selectedBuild = production;
         builder.BuildCreater(GameObjectHelper.GetMouseWorldPosition(), production, grid.CellSize());
+    }
+
+    /// <summary>
+    /// UI Button Spawn Soldier
+    /// </summary>
+    public void SpawnButton()
+    {
+        if (selectedSpawnBuild != null)
+        {
+            selectedSpawnBuild.GetComponent<ISpawnButton>().Spawn();
+        }
     }
 
     #endregion

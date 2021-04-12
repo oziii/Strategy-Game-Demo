@@ -13,25 +13,27 @@ public class SpawnBuild : AbstractBuild, ISpawn
     public bool selected;
 
     public Vector3 flagPos;
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(1) && selected)
-        {
-            FlagAdd();
-        }
-    }
 
-    private void FlagAdd()
-    { 
-        var node = Grid.NodeGet(GameObjectHelper.GetMouseWorldPosition());
-       if (node != null)
-       {
-           flagPos = node.position;
-           
-           var flag = Instantiate(Resources.Load<GameObject>("Flag"));
-           flag.transform.position = flagPos;
-           print(node.gameObject.name);
-       }
+
+    public GameObject Flag { get; set; }
+
+    public GameObject FlagAdd(GameObject flag, Vector3 pos)
+    {
+        if(flag == null)
+        {
+            flag = Instantiate(Resources.Load<GameObject>("Flag"));
+        }
+        
+        var node = Grid.NodeGet(pos);
+        if (node == null || node.isBlocked)
+        {
+            print("Cannot this here flag");
+            FlagAdd(flag, GameObjectHelper.GetMouseWorldPosition());
+        }
+        flagPos = node.position;
+
+        flag.transform.position = flagPos;
+        return flag;
     }
     
     /// <summary>
@@ -45,7 +47,7 @@ public class SpawnBuild : AbstractBuild, ISpawn
         List<Collider2D> nodes = new List<Collider2D>();
         HashSet<Node> spawnNodeList = new HashSet<Node>();
         
-        while (Physics2D.OverlapCircle(pos, range, layerMask, nodes) > 1)
+        if (Physics2D.OverlapCircle(pos, range, layerMask, nodes) > 1)
         {
             foreach (var nodeVar in nodes)
             {
@@ -57,32 +59,6 @@ public class SpawnBuild : AbstractBuild, ISpawn
                     }
                 }
             }
-            
-            
-            if (spawnNodeList.Count != 0) { Spawn(spawnNodeList, production.unitSprite.RandomItem()); }
-            
-            yield return null;
-        }
-    }
-    
-    public IEnumerator UnitSpawn(Production production)
-    {
-        List<Collider2D> nodes = new List<Collider2D>();
-        HashSet<Node> spawnNodeList = new HashSet<Node>();
-        
-        while (Physics2D.OverlapCircle(flagPos, range, layerMask, nodes) > 1)
-        {
-            foreach (var nodeVar in nodes)
-            {
-                if (nodeVar.TryGetComponent(out Node node))
-                {
-                    if (!node.isBlocked)
-                    {
-                        spawnNodeList.Add(node);
-                    }
-                }
-            }
-           
             
             if (spawnNodeList.Count != 0) { Spawn(spawnNodeList, production.unitSprite.RandomItem()); }
             

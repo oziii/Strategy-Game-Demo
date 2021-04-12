@@ -38,6 +38,7 @@ public class Builder : MonoBehaviour
                 //var tempObject = Instantiate(production.spriteObject, pos, Quaternion.identity);
                 
                 var tempObject = ObjectPooler.SharedInstance.GetPooledObject(production.spriteObject.tag);
+                
                 tempObject.SetActive(true);
                 tempObject.transform.position = pos;
                 tempObject.transform.localScale = Vector3.one * size;
@@ -134,8 +135,7 @@ public class Builder : MonoBehaviour
             ISpawn spawn = list.First().GetComponent<ISpawn>();
             if (spawn != null)
             {
-                //StartCoroutine(list.First().GetComponent<ISpawn>().UnitSpawn(production, ClampHelper.MidPoint(list.First().position, list.Last().position)));
-                StartCoroutine(list.First().GetComponent<ISpawn>().UnitSpawn(production));
+                list.First().GetComponent<ISpawn>().Flag = list.First().GetComponent<ISpawn>().FlagAdd(list.First().GetComponent<ISpawn>().Flag, Grid.RangeRandomPoint(GameObjectHelper.GetMouseWorldPosition()));
             }
 
         }

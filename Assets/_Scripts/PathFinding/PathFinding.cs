@@ -135,7 +135,7 @@ public class PathFinding : MonoBehaviour
 
             if (!_findedPath)
             {
-                print("yol bulunamadı");
+                print("path not found");
             }
         }
     }

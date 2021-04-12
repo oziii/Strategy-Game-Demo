@@ -38,12 +38,12 @@ public class InformationMenu : MonoBehaviour
             productionSprite.gameObject.SetActive(true);
             // productionSprite.GetComponent<Button>().onClick.AddListener(delegate
             // {
-            //     production.unitSprite[0].spriteObject.GetComponent<Barrack>().SS("ss");
+            //     production.unitSprite[0].spriteObject.GetComponent<Barrack>().Spawn();
             // });     
-            productionSprite.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                production.unitSprite[0].spriteObject.GetComponent<Barrack>().SS(5);
-            }); 
+            // productionSprite.GetComponent<Button>().onClick.AddListener(() =>
+            // {
+            //     production.unitSprite[0].spriteObject.GetComponent<Barrack>().SS(5);
+            // }); 
         }
         
     }
