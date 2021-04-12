@@ -36,14 +36,6 @@ public class InformationMenu : MonoBehaviour
             productionName.text = production.unitSprite[0].productionName;
             productionSprite.sprite = production.unitSprite[0].structureSprite;
             productionSprite.gameObject.SetActive(true);
-            // productionSprite.GetComponent<Button>().onClick.AddListener(delegate
-            // {
-            //     production.unitSprite[0].spriteObject.GetComponent<Barrack>().Spawn();
-            // });     
-            // productionSprite.GetComponent<Button>().onClick.AddListener(() =>
-            // {
-            //     production.unitSprite[0].spriteObject.GetComponent<Barrack>().SS(5);
-            // }); 
         }
         
     }
